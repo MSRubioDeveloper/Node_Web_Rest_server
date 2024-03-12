@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const envs_1 = require("./config/envs");
+const routes_1 = require("./presentation/routes");
 const server_1 = require("./presentation/server");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield main();
@@ -19,7 +20,8 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const server = new server_1.Server({
             PORT: envs_1.envs.PORT,
-            PUBLIC_PATH: envs_1.envs.PUBLIC_PATH
+            PUBLIC_PATH: envs_1.envs.PUBLIC_PATH,
+            routes: routes_1.AppRoutes.routes
         });
         server.start();
     });

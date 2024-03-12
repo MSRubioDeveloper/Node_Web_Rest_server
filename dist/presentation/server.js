@@ -19,20 +19,30 @@ class Server {
     constructor(options) {
         //importacion de express()
         this.app = (0, express_1.default)();
-        const { PORT, PUBLIC_PATH = "public" } = options;
+        const { PORT, PUBLIC_PATH = "public", routes } = options;
         this.port = PORT;
         this.publicPath = PUBLIC_PATH;
+        this.routes = routes;
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
             //* Middlewares
+            //la data que venga en JSON la serializa para recibirla en express
+            // como un obj valido de js
+            this.app.use(express_1.default.json());
+            //data que venga por x-www-form-urlencoded
+            this.app.use(express_1.default.urlencoded({ extended: true }));
             //* Public Folder
             this.app.use(express_1.default.static(this.publicPath));
+            //* Routes 
+            this.app.use(this.routes);
             //si no existe la carpeta solicitada ( ej. search )
+            //* SPA
             this.app.get("*", (req, res) => {
                 const indexPath = path_1.default.join(__dirname + `../../../${this.publicPath}/index.html`);
                 res.sendFile(indexPath);
             });
+            //Puerto para que la app corra
             this.app.listen(this.port, () => {
                 console.log("server running on port 3000");
             });
